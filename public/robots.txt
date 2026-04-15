@@ -1,0 +1,21 @@
+# Block Google's dedicated image crawler entirely (no images in Google Images)
+User-agent: Googlebot-Image
+Disallow: /
+
+# Block Bing's image crawler too
+User-agent: msnbot-media
+Disallow: /
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /uploads/
+# Best-effort: discourage compliant crawlers from fetching image files directly
+Disallow: /*.jpg$
+Disallow: /*.jpeg$
+Disallow: /*.png$
+Disallow: /*.gif$
+Disallow: /*.webp$
+Disallow: /*.svg$
+
+Sitemap: https://ohsccc.github.io/sitemap-index.xml

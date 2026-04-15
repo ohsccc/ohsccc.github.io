@@ -6,7 +6,34 @@ interface Props {
 	description?: string;
 }
 
-const { title, description = "Welcome to the Okemos High School Chinese Culture Club." } = Astro.props;
+const SITE_NAME = "Okemos High School Chinese Culture Club";
+const DEFAULT_DESCRIPTION = "The official site of the Okemos High School Chinese Culture Club (OHS CCC) — a student-run club exploring Chinese games, arts, language, and cultural traditions. All students welcome.";
+
+const { title, description = DEFAULT_DESCRIPTION } = Astro.props;
+
+// 首页使用完整校名作为标题以提升 SEO 权重；其余页面使用 "页面 | 校名" 结构
+const isHome = Astro.url.pathname === "/" || Astro.url.pathname === "";
+const fullTitle = isHome ? SITE_NAME : `${title} | ${SITE_NAME}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+const orgJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "EducationalOrganization",
+	name: SITE_NAME,
+	alternateName: ["OHS CCC", "OHS Chinese Culture Club", "Okemos Chinese Culture Club"],
+	url: Astro.site?.href,
+	description: DEFAULT_DESCRIPTION,
+	parentOrganization: {
+		"@type": "HighSchool",
+		name: "Okemos High School",
+		address: {
+			"@type": "PostalAddress",
+			addressLocality: "Okemos",
+			addressRegion: "MI",
+			addressCountry: "US"
+		}
+	}
+};
 ---
 
 <!doctype html>
@@ -16,8 +43,28 @@ const { title, description = "Welcome to the Okemos High School Chinese Culture 
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title} | OHS Chinese Culture Club</title>
+		<title>{fullTitle}</title>
 		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<meta name="robots" content="index, follow" />
+		<meta name="google-site-verification" content="ph7HlSsGoD2oIbx66axtp2SL7SwfVtp8YTd026yXm_c" />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={SITE_NAME} />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:locale" content="en_US" />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={fullTitle} />
+		<meta name="twitter:description" content={description} />
+
+		<!-- JSON-LD 结构化数据，帮助 Google 理解站点实体 -->
+		<script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} />
+
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">

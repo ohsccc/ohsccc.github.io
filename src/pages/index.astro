@@ -14,7 +14,10 @@ const connectEntry = await getEntry('settings', 'connect');
 const { Content: ConnectContent } = connectEntry ? await render(connectEntry) : { Content: () => null };
 ---
 
-<Layout title="Home">
+<Layout
+  title="Home"
+  description="The Okemos High School Chinese Culture Club (OHS CCC) — a student-run club at Okemos High School exploring Chinese games, arts, language, and cultural traditions. All students welcome, no prior knowledge needed."
+>
   <!-- ===== 英雄区 ===== -->
   <section class="relative pt-6 pb-14 md:pt-10 md:pb-22 overflow-hidden">
 
