@@ -1,0 +1,98 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-serif: "Noto Serif", "Georgia", "Times New Roman", serif;
+  --font-display-chinese: "Ma Shan Zheng", "STKaiti", serif;
+  --color-cinnabar: #E03C31;
+  --color-gold: #B8861E;
+  --color-ink: #1a1a1a;
+  --color-paper: #fcfbf9;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    line-height: 1.8;
+  }
+}
+
+@layer utilities {
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+  
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+  
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+
+  /* Make sure initial state is hidden for elements that will be animated */
+  .reveal-on-load {
+    opacity: 0;
+  }
+}
+
+/* 中式卡片组件 */
+.chinese-card {
+  background: white;
+  overflow: hidden;
+  border: 1px solid rgba(26, 26, 26, 0.08);
+  box-shadow: 0 2px 10px rgba(26, 26, 26, 0.05), 2px 2px 0 0 rgba(224, 60, 49, 0.08);
+  transition: box-shadow 0.25s ease;
+}
+
+.chinese-card:hover {
+  box-shadow: 0 6px 24px rgba(224, 60, 49, 0.12), 2px 2px 0 0 rgba(224, 60, 49, 0.15);
+}
+
+.chinese-card-header {
+  background: var(--color-cinnabar);
+  color: white;
+  padding: 0.875rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  position: relative;
+}
+
+/* 回纹装饰边线 */
+.chinese-card-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.chinese-card-body {
+  padding: 1.5rem;
+}

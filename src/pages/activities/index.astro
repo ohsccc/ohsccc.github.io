@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allActivities = await getCollection('activities');
+const sortedActivities = allActivities.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Layout title="Announcements & Activities" description="Announcements and a chronicle of our past events, workshops, and gatherings.">
+	<div class="space-y-12">
+		<header class="border-b border-ink/10 pb-8 mb-12 reveal-on-load animate-fade-in-up">
+			<h1 class="text-4xl sm:text-5xl font-bold">Announcements <span class="text-cinnabar italic">& Activities</span></h1>
+			<p class="mt-4 text-ink/70 text-lg">Club updates and a chronicle of our cultural journey together.</p>
+			<p class="mt-6 text-sm text-ink/50 bg-ink/5 border border-ink/10 rounded px-4 py-3 max-w-xl">
+				This page may not reflect the most recent events. For the latest announcements and activities, check our
+				<a href="https://www.instagram.com/ohs_chinese.culture.club/" target="_blank" rel="noopener noreferrer" class="text-cinnabar underline underline-offset-2">Instagram</a>
+				or <a href="https://classroom.google.com/c/NjQzMzEwNjM4MDM0?cjc=vt6gqx5" target="_blank" rel="noopener noreferrer" class="text-cinnabar underline underline-offset-2">Google Classroom</a>.
+			</p>
+		</header>
+
+		<div class="space-y-16 reveal-on-load animate-fade-in-up delay-200">
+			{sortedActivities.map(activity => (
+				<article class="group border-l-2 border-transparent hover:border-cinnabar pl-6 transition-colors">
+					<a href={`/activities/${activity.id}`} class="block space-y-3">
+						<time class="text-sm tracking-widest uppercase text-ink/50" datetime={activity.data.date.toISOString()}>
+							{activity.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+						</time>
+						<h2 class="text-3xl font-bold group-hover:text-cinnabar transition-colors">{activity.data.title}</h2>
+						<p class="text-ink/80 text-lg leading-relaxed max-w-2xl">{activity.data.description}</p>
+						<span class="inline-block text-cinnabar italic text-sm mt-4">Read more &rarr;</span>
+					</a>
+				</article>
+			))}
+		</div>
+	</div>
+</Layout>

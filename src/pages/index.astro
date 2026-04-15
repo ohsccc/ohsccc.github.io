@@ -1,0 +1,189 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+
+const allActivities = await getCollection('activities');
+const recentActivities = allActivities
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const meetingsEntry = await getEntry('settings', 'meetings');
+const { Content: MeetingsContent } = meetingsEntry ? await render(meetingsEntry) : { Content: () => null };
+
+const connectEntry = await getEntry('settings', 'connect');
+const { Content: ConnectContent } = connectEntry ? await render(connectEntry) : { Content: () => null };
+---
+
+<Layout title="Home">
+  <!-- ===== 英雄区 ===== -->
+  <section class="relative pt-6 pb-14 md:pt-10 md:pb-22 overflow-hidden">
+
+    <!-- 背景：大型水印印章（右上） -->
+    <div
+      class="absolute -top-8 -right-8 w-72 h-72 md:w-[26rem] md:h-[26rem] pointer-events-none select-none"
+      style="opacity: 0.038;"
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="110" cy="110" r="100" stroke="#E03C31" stroke-width="3.5"/>
+        <circle cx="110" cy="110" r="90" stroke="#E03C31" stroke-width="1.2"/>
+        <text x="110" y="148" text-anchor="middle" font-family="'Ma Shan Zheng', serif" font-size="100" fill="#E03C31">华</text>
+        <!-- 圆形分隔线 -->
+        <path d="M30,110 A80,80 0 0,1 190,110" stroke="#E03C31" stroke-width="0.8" fill="none" stroke-dasharray="5 4"/>
+        <path d="M30,110 A80,80 0 0,0 190,110" stroke="#E03C31" stroke-width="0.8" fill="none" stroke-dasharray="5 4"/>
+      </svg>
+    </div>
+
+    <!-- 左下角：祥云装饰 -->
+    <div class="absolute bottom-8 left-0 pointer-events-none select-none opacity-[0.07] text-cinnabar hidden md:block" aria-hidden="true">
+      <svg width="160" height="100" viewBox="0 0 160 100" fill="currentColor">
+        <ellipse cx="30" cy="70" rx="28" ry="18"/>
+        <ellipse cx="55" cy="58" rx="22" ry="16"/>
+        <ellipse cx="80" cy="52" rx="24" ry="17"/>
+        <ellipse cx="106" cy="58" rx="22" ry="16"/>
+        <ellipse cx="130" cy="68" rx="26" ry="17"/>
+        <rect x="2" y="68" width="156" height="32"/>
+      </svg>
+    </div>
+
+    <!-- 主体横向布局 -->
+    <div class="flex items-start gap-4 md:gap-8 relative z-10">
+
+      <!-- 左侧竖排文字（桌面端） -->
+      <div class="hidden md:flex flex-col items-center pt-8 shrink-0 gap-2 select-none" aria-hidden="true">
+        <div class="w-px h-8 bg-cinnabar/35"></div>
+        <p
+          class="font-display-chinese text-base text-cinnabar/55 tracking-[0.55em] py-1"
+          style="writing-mode: vertical-rl; text-orientation: mixed;"
+        >
+          中国文学社
+        </p>
+        <div class="w-px h-8 bg-cinnabar/35"></div>
+      </div>
+
+      <!-- 标题区（带角落装饰） -->
+      <div class="flex-1 relative reveal-on-load animate-fade-in-up">
+        <!-- 左上角 L 形 -->
+        <svg class="absolute -top-6 -left-2 w-9 h-9 text-cinnabar/55" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <path d="M0 27 L0 0 L27 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"/>
+        </svg>
+
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight px-5 pt-5 pb-7">
+          <span class="block text-ink/80 mb-2">Okemos High School</span>
+          <span class="block text-cinnabar relative">
+            Chinese Culture Club
+            <span class="absolute -bottom-3 left-0 w-20 h-[2px] bg-cinnabar/45"></span>
+          </span>
+        </h1>
+
+        <!-- 右下角 L 形 -->
+        <svg class="absolute -bottom-1 right-0 w-9 h-9 text-cinnabar/55" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <path d="M27 0 L27 27 L0 27" stroke="currentColor" stroke-width="2.5" stroke-linecap="square"/>
+        </svg>
+      </div>
+
+    </div>
+
+    <!-- 介绍文字 -->
+    <p class="mt-10 text-lg sm:text-xl max-w-2xl text-ink/72 leading-relaxed reveal-on-load animate-fade-in-up delay-100 relative z-10 pl-5 border-l-[3px] border-cinnabar/30 md:ml-16">
+      We explore, play, and share the vibrant energy of Chinese games, arts, and cultural traditions.
+      Everyone is welcome—no prior knowledge of Chinese culture is needed!
+    </p>
+  </section>
+
+  <!-- ===== 信息卡片区 ===== -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 reveal-on-load animate-fade-in-up delay-200">
+    <!-- 会议 & 更新 -->
+    <div class="chinese-card">
+      <div class="chinese-card-header">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        {meetingsEntry?.data.title || 'Club Meetings'}
+      </div>
+      <div class="chinese-card-body prose prose-stone prose-sm max-w-none text-ink/80 prose-p:leading-relaxed prose-a:text-cinnabar hover:prose-a:text-cinnabar/80 prose-hr:border-ink/10">
+        <MeetingsContent />
+      </div>
+    </div>
+
+    <!-- 联系 & 社群 -->
+    <div class="chinese-card">
+      <div class="chinese-card-header">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+        </svg>
+        {connectEntry?.data.title || 'Connect With Us'}
+      </div>
+      <div class="chinese-card-body prose prose-stone prose-sm max-w-none text-ink/80 prose-p:leading-relaxed prose-a:text-cinnabar hover:prose-a:text-cinnabar/80 prose-hr:border-ink/10">
+        <ConnectContent />
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 中式装饰分隔线 ===== -->
+  <div class="my-20 flex justify-center items-center reveal-on-load animate-fade-in-up delay-300" aria-hidden="true">
+    <div class="flex items-center gap-4 text-cinnabar/42">
+      <!-- 左侧波浪线 -->
+      <svg class="w-28 h-5" viewBox="0 0 112 20" fill="none">
+        <path
+          d="M0,10 Q7,3 14,10 Q21,17 28,10 Q35,3 42,10 Q49,17 56,10 Q63,3 70,10 Q77,17 84,10 Q91,3 98,10 Q105,17 112,10"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        />
+        <circle cx="0" cy="10" r="2" fill="currentColor"/>
+      </svg>
+
+      <!-- 中心纹饰：嵌套菱形 -->
+      <div class="flex items-center gap-1.5">
+        <div class="w-2 h-2 border border-current/80 rotate-45"></div>
+        <div class="w-4 h-4 border-2 border-current rotate-45 flex items-center justify-center">
+          <div class="w-1.5 h-1.5 bg-current rotate-45"></div>
+        </div>
+        <div class="w-2 h-2 border border-current/80 rotate-45"></div>
+      </div>
+
+      <!-- 右侧波浪线（镜像相位） -->
+      <svg class="w-28 h-5" viewBox="0 0 112 20" fill="none">
+        <path
+          d="M0,10 Q7,17 14,10 Q21,3 28,10 Q35,17 42,10 Q49,3 56,10 Q63,17 70,10 Q77,3 84,10 Q91,17 98,10 Q105,3 112,10"
+          stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+        />
+        <circle cx="112" cy="10" r="2" fill="currentColor"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ===== 近期活动区 ===== -->
+  <section class="space-y-10 reveal-on-load animate-fade-in-up delay-400">
+    <div class="flex items-end justify-between">
+      <div class="flex items-center gap-4">
+        <!-- 竖向笔触装饰 -->
+        <svg class="w-5 h-10 text-cinnabar/55 shrink-0" viewBox="0 0 16 40" fill="none" aria-hidden="true">
+          <path d="M8,2 Q12,10 8,18 Q4,26 8,34 Q10,38 8,40" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="8" cy="2" r="2.5" fill="currentColor"/>
+        </svg>
+        <div>
+          <p class="text-[0.7rem] tracking-[0.45em] text-cinnabar/65 font-serif uppercase mb-0.5">近期活动</p>
+          <h2 class="text-3xl font-bold">Recent Activities</h2>
+        </div>
+      </div>
+      <a href="/activities" class="text-cinnabar hover:underline italic text-lg pb-1">View all &rarr;</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
+      {recentActivities.map(activity => (
+        <article class="group cursor-pointer">
+          <a
+            href={`/activities/${activity.id}`}
+            class="block space-y-3 pl-4 border-l-2 border-cinnabar/18 group-hover:border-cinnabar/60 transition-colors duration-200"
+          >
+            <p class="text-sm text-ink/50">
+              {activity.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </p>
+            <h3 class="text-xl font-bold group-hover:text-cinnabar transition-colors">{activity.data.title}</h3>
+            <p class="text-ink/65 line-clamp-3 text-sm leading-relaxed">{activity.data.description}</p>
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout>

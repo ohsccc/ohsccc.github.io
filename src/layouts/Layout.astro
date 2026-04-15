@@ -1,0 +1,83 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "Welcome to the Okemos High School Chinese Culture Club." } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title} | OHS Chinese Culture Club</title>
+		<meta name="description" content={description} />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+	</head>
+	<body class="min-h-screen flex flex-col antialiased selection:bg-cinnabar selection:text-white relative">
+		<!-- Subtle background texture/watermark -->
+		<div class="fixed inset-0 pointer-events-none -z-10 opacity-[0.03] mix-blend-multiply" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%231a1a1a\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+		
+		<header class="py-12 border-b border-ink/10 reveal-on-load animate-fade-in-up">
+			<div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-6">
+				<a href="/" class="group flex items-center gap-4 text-3xl font-bold tracking-tight hover:text-cinnabar transition-colors">
+					<!-- 方形印章 Logo -->
+					<div class="relative flex items-center justify-center w-12 h-12 border-2 border-cinnabar group-hover:scale-105 transition-transform duration-300 shrink-0">
+						<!-- 内框 -->
+						<div class="absolute inset-[4px] border border-cinnabar/40"></div>
+						<!-- 四角点 -->
+						<div class="absolute -top-[3px] -left-[3px] w-[6px] h-[6px] bg-cinnabar"></div>
+						<div class="absolute -top-[3px] -right-[3px] w-[6px] h-[6px] bg-cinnabar"></div>
+						<div class="absolute -bottom-[3px] -left-[3px] w-[6px] h-[6px] bg-cinnabar"></div>
+						<div class="absolute -bottom-[3px] -right-[3px] w-[6px] h-[6px] bg-cinnabar"></div>
+						<span class="font-display-chinese text-[1.55rem] text-cinnabar leading-none relative z-10 mt-0.5 select-none">文</span>
+					</div>
+					<div class="flex flex-col">
+						<span>OHS CCC<span class="text-cinnabar">.</span></span>
+						<span class="text-xs font-serif font-normal tracking-[0.4em] text-ink/40 mt-1 uppercase">中国文学社</span>
+					</div>
+				</a>
+				<nav class="flex flex-wrap gap-6 sm:gap-8 text-sm uppercase tracking-widest justify-center sm:justify-end">
+					<a href="/" class="hover:text-cinnabar transition-colors">Home</a>
+					<a href="/activities" class="hover:text-cinnabar transition-colors">Announcements</a>
+					<a href="/officers" class="hover:text-cinnabar transition-colors">Club Officers</a>
+					<a href="/contact" class="hover:text-cinnabar transition-colors">Contact Us</a>
+				</nav>
+			</div>
+		</header>
+		
+		<main class="flex-grow max-w-6xl mx-auto px-6 py-16 w-full relative z-10">
+			<slot />
+		</main>
+
+		<footer class="py-16 mt-12 border-t border-ink/10 text-center text-sm text-ink/60 relative overflow-hidden">
+			<!-- Abstract knot/lantern background in footer -->
+			<svg class="absolute left-1/2 -translate-x-1/2 bottom-0 w-96 h-96 text-ink/[0.02] -z-10" viewBox="0 0 100 100" fill="currentColor">
+				<path d="M50 10 L90 50 L50 90 L10 50 Z" stroke="currentColor" stroke-width="2" fill="none"/>
+				<path d="M50 20 L80 50 L50 80 L20 50 Z" stroke="currentColor" stroke-width="1" fill="none"/>
+				<circle cx="50" cy="50" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+				<path d="M50 90 V100 M50 0 V10 M10 50 H0 M90 50 H100" stroke="currentColor" stroke-width="2"/>
+			</svg>
+			
+			<div class="max-w-6xl mx-auto px-6 space-y-6">
+				<div class="flex justify-center items-center gap-3 mb-8">
+					<div class="w-12 h-px bg-gradient-to-r from-transparent to-cinnabar/30"></div>
+					<span class="w-1.5 h-1.5 rounded-full bg-cinnabar/60 rotate-45 transform"></span>
+					<span class="w-2 h-2 rounded-full bg-cinnabar"></span>
+					<span class="w-1.5 h-1.5 rounded-full bg-cinnabar/60 rotate-45 transform"></span>
+					<div class="w-12 h-px bg-gradient-to-l from-transparent to-cinnabar/30"></div>
+				</div>
+				<p class="font-serif tracking-[0.3em] text-lg text-ink/80">和而不同 · 臻于至善</p>
+				<p>&copy; {new Date().getFullYear()} Okemos High School Chinese Culture Club. All rights reserved.</p>
+			</div>
+		</footer>
+	</body>
+</html>
